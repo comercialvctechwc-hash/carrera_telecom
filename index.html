@@ -309,49 +309,62 @@
       box-shadow: 0 16px 36px rgba(0,0,0,.25);
       animation: floatChip 5s ease-in-out infinite;
     }
-    .status-panel {
+    .chip-tooltip {
       position: absolute;
-      right: 4%;
-      bottom: 8%;
-      z-index: 6;
-      width: min(250px, 70%);
-      border-radius: 20px;
-      padding: 16px;
-      background: rgba(18,7,7,.78);
-      border: 1px solid rgba(242,188,47,.24);
+      z-index: 8;
+      min-width: 220px;
+      max-width: 260px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(18,7,7,.88);
+      border: 1px solid rgba(242,188,47,.30);
       backdrop-filter: blur(16px);
-      box-shadow: 0 16px 36px rgba(0,0,0,.25);
+      box-shadow: 0 16px 36px rgba(0,0,0,.30);
       color: var(--cream);
-      animation: floatChip 5.8s ease-in-out infinite;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(10px) scale(.96);
+      transition: opacity .22s ease, transform .22s ease;
     }
-    .status-panel small {
+    .chip-tooltip.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .chip-tooltip-kicker {
       display: block;
       color: var(--yellow-2);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
-      letter-spacing: .12em;
+      letter-spacing: .14em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
-    .status-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 13px;
+    .chip-tooltip strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .chip-tooltip p {
+      margin: 0;
       color: var(--muted);
-      padding: 7px 0;
-      border-top: 1px solid rgba(255,255,255,.08);
+      font-size: 13px;
+      line-height: 1.45;
     }
-    .status-line:first-of-type { border-top: 0; }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--yellow-2);
-      box-shadow: 0 0 14px rgba(242,188,47,.9);
-      animation: nodePulse 2s ease-in-out infinite;
-      flex: 0 0 auto;
+    .chip-tooltip p::after {
+      content: '|';
+      color: var(--yellow-2);
+      margin-left: 2px;
+      animation: blink .85s steps(2, start) infinite;
+    }
+    .chip-tooltip.done p::after { display: none; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-chip { cursor: pointer; }
+    .hero-chip:hover,
+    .hero-chip.active {
+      border-color: rgba(242,188,47,.62);
+      background: rgba(242,188,47,.11);
+      box-shadow: 0 18px 42px rgba(242,188,47,.16), 0 16px 36px rgba(0,0,0,.25);
     }
     .hero-chip svg { width: 16px; height: 16px; color: var(--yellow); }
     .chip-a { left: 4%; top: 20%; }
@@ -884,7 +897,7 @@
       h1 { letter-spacing: -2.2px; }
       .hero { padding: 48px 0 72px; }
       .signal-stage { min-height: 310px; margin-top: 8px; }
-      .hero-chip, .status-panel { display: none; }
+      .hero-chip, .chip-tooltip { display: none; }
       .section-band { margin-top: -44px; }
       .band-wrap, .solutions-grid, .area-grid, .contact-grid, .form-grid { grid-template-columns: 1fr; }
       section { padding: 62px 0; }
@@ -1001,11 +1014,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg>
             Relacionamento
           </span>
-          <div class="status-panel" aria-label="Status comercial Carrera Telecom">
-            <small>Sinal comercial ativo</small>
-            <div class="status-line"><span>Consultoria telecom</span><i class="status-dot"></i></div>
-            <div class="status-line"><span>Atendimento humano</span><i class="status-dot"></i></div>
-            <div class="status-line"><span>Conexões em andamento</span><i class="status-dot"></i></div>
+          <div class="chip-tooltip" id="chipTooltip" aria-live="polite">
+            <span class="chip-tooltip-kicker" id="chipTooltipKicker">Interação</span>
+            <strong id="chipTooltipTitle">Estratégia</strong>
+            <p id="chipTooltipText"></p>
           </div>
 
           <svg class="hero-svg" viewBox="0 0 620 520" role="img" aria-label="Fluxo de conexões Carrera Telecom">
@@ -1453,6 +1465,89 @@
         document.body.style.setProperty('--my', `${event.clientY}px`);
       }, { passive: true });
     }
+
+    const chipData = {
+      'Estratégia': {
+        kicker: 'Interação',
+        title: 'Estratégia comercial',
+        text: 'Leitura do cenário antes da indicação da solução.'
+      },
+      'Telecom': {
+        kicker: 'Interação',
+        title: 'Portfólio telecom',
+        text: 'Conectividade, mobilidade e soluções relacionadas.'
+      },
+      'Relacionamento': {
+        kicker: 'Interação',
+        title: 'Atendimento humano',
+        text: 'Clareza, proximidade e acompanhamento comercial.'
+      }
+    };
+
+    const chipTooltip = document.querySelector('#chipTooltip');
+    const chipTooltipKicker = document.querySelector('#chipTooltipKicker');
+    const chipTooltipTitle = document.querySelector('#chipTooltipTitle');
+    const chipTooltipText = document.querySelector('#chipTooltipText');
+    const heroChips = document.querySelectorAll('.hero-chip');
+    let typingTimer;
+
+    function typeText(element, text, speed = 18) {
+      clearInterval(typingTimer);
+      element.textContent = '';
+      chipTooltip?.classList.remove('done');
+      let index = 0;
+      typingTimer = setInterval(() => {
+        element.textContent += text.charAt(index);
+        index += 1;
+        if (index >= text.length) {
+          clearInterval(typingTimer);
+          setTimeout(() => chipTooltip?.classList.add('done'), 260);
+        }
+      }, speed);
+    }
+
+    function showChipTooltip(chip) {
+      if (!chipTooltip || !stage) return;
+      const label = chip.textContent.trim();
+      const data = chipData[label];
+      if (!data) return;
+
+      heroChips.forEach((item) => item.classList.remove('active'));
+      chip.classList.add('active');
+
+      chipTooltipKicker.textContent = data.kicker;
+      chipTooltipTitle.textContent = data.title;
+      typeText(chipTooltipText, data.text);
+
+      const chipRect = chip.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
+      const tooltipWidth = 260;
+
+      let left = chipRect.left - stageRect.left + chipRect.width / 2 + 14;
+      let top = chipRect.top - stageRect.top - 6;
+
+      if (left > stageRect.width - tooltipWidth - 10) left = stageRect.width - tooltipWidth - 10;
+      if (left < 10) left = 10;
+      if (top < 10) top = 10;
+
+      chipTooltip.style.left = `${left}px`;
+      chipTooltip.style.top = `${top}px`;
+      chipTooltip.classList.add('show');
+    }
+
+    function hideChipTooltip() {
+      chipTooltip?.classList.remove('show');
+      heroChips.forEach((item) => item.classList.remove('active'));
+      clearInterval(typingTimer);
+    }
+
+    heroChips.forEach((chip) => {
+      chip.setAttribute('tabindex', '0');
+      chip.addEventListener('mouseenter', () => showChipTooltip(chip));
+      chip.addEventListener('focus', () => showChipTooltip(chip));
+      chip.addEventListener('mouseleave', hideChipTooltip);
+      chip.addEventListener('blur', hideChipTooltip);
+    });
 
     const scenarioData = {
       residencial: {
