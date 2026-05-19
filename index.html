@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Carrera Telecom | Representação Comercial em Telecomunicações</title>
-  <meta name="description" content="Carrera Telecom: representação comercial em telecomunicações, conectando clientes a soluções de internet, TV, mobilidade, Wi‑Fi e tecnologia." />
+  <meta name="description" content="Carrera Telecom: representação comercial em telecomunicações, conectando clientes a soluções de conectividade, TV, mobilidade, Wi‑Fi e tecnologia." />
   <meta name="keywords" content="Carrera Telecom, representação comercial telecom, telecomunicações, conectividade, fibra óptica, TV, móvel, Wi-Fi, Tijucas SC" />
   <meta name="author" content="Carrera Telecom" />
   <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#8d0f12" />
+  <meta name="format-detection" content="telephone=no" />
+
   <meta property="og:title" content="Carrera Telecom | Representação Comercial em Telecomunicações" />
-  <meta property="og:description" content="Mais do que representar serviços, representamos soluções que conectam negócios e pessoas." />
+  <meta property="og:description" content="Mais do que representar serviços, representamos conexões que aproximam pessoas, negócios e oportunidades." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pt_BR" />
-  <meta name="theme-color" content="#8d0f12" />
+  <meta property="og:image" content="assets/og-image.png" />
+
+  <link rel="icon" href="assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --black: #090303;
@@ -49,6 +56,62 @@
     svg { display: block; }
     p { color: var(--muted); }
     .container { width: min(var(--max), calc(100% - 44px)); margin: 0 auto; }
+    .skip-link {
+      position: fixed;
+      left: 16px;
+      top: 16px;
+      z-index: 999;
+      transform: translateY(-140%);
+      background: var(--yellow-2);
+      color: #210606;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      transition: transform .18s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 28%), rgba(242,188,47,.075), transparent 20rem),
+        radial-gradient(circle at calc(var(--mx, 50%) + 18%) calc(var(--my, 28%) + 12%), rgba(201,25,32,.06), transparent 24rem);
+      opacity: .9;
+    }
+
+    .page-network {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .58;
+    }
+    .page-network svg { width: 100%; height: 100%; display: block; }
+    .backbone-path {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset .28s linear;
+      filter: drop-shadow(0 0 10px rgba(242,188,47,.22));
+    }
+    .network-node {
+      opacity: .25;
+      transform-origin: center;
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .network-node.active {
+      opacity: 1;
+      transform: scale(1.25);
+      filter: drop-shadow(0 0 12px rgba(242,188,47,.75));
+    }
+    .network-dot {
+      fill: var(--yellow-2);
+      filter: drop-shadow(0 0 10px rgba(242,188,47,.8));
+      opacity: .9;
+    }
 
     .reveal {
       opacity: 0;
@@ -114,6 +177,7 @@
       font-weight: 850;
       transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
       white-space: nowrap;
+      cursor: pointer;
     }
     .btn:hover { transform: translateY(-2px); }
     .btn-primary {
@@ -121,6 +185,22 @@
       color: #210606;
       border-color: transparent;
       box-shadow: 0 18px 46px rgba(201,25,32,.24), 0 8px 24px rgba(242,188,47,.13);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+      transform: translateX(-130%);
+      animation: btnPulse 4.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes btnPulse {
+      0%, 52% { transform: translateX(-130%); opacity: 0; }
+      68% { opacity: .7; }
+      88%, 100% { transform: translateX(130%); opacity: 0; }
     }
     .btn-secondary { background: rgba(255,255,255,.065); color: var(--cream); }
 
@@ -129,11 +209,11 @@
       min-height: calc(100vh - 76px);
       display: grid;
       align-items: center;
-      padding: 70px 0 86px;
+      padding: 70px 0 96px;
       overflow: hidden;
       background:
-        radial-gradient(circle at 17% 8%, rgba(201,25,32,.28), transparent 32%),
-        radial-gradient(circle at 82% 22%, rgba(242,188,47,.14), transparent 30%),
+        radial-gradient(circle at 17% 8%, rgba(201,25,32,.30), transparent 32%),
+        radial-gradient(circle at 82% 22%, rgba(242,188,47,.15), transparent 30%),
         linear-gradient(135deg, #130606 0%, #090303 46%, #160606 100%);
     }
     .hero::before {
@@ -154,50 +234,6 @@
       height: 420px;
       background: radial-gradient(circle, rgba(242,188,47,.16), transparent 68%);
       pointer-events: none;
-    }
-    .page-network {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: .58;
-    }
-    .page-network svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .backbone-path {
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      transition: stroke-dashoffset .28s linear;
-      filter: drop-shadow(0 0 10px rgba(242,188,47,.22));
-    }
-    .network-node {
-      opacity: .25;
-      transform-origin: center;
-      transition: opacity .45s ease, transform .45s ease;
-    }
-    .network-node.active {
-      opacity: 1;
-      transform: scale(1.25);
-      filter: drop-shadow(0 0 12px rgba(242,188,47,.75));
-    }
-    .network-dot {
-      fill: var(--yellow-2);
-      filter: drop-shadow(0 0 10px rgba(242,188,47,.8));
-      opacity: .9;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at var(--mx, 50%) var(--my, 28%), rgba(242,188,47,.075), transparent 20rem),
-        radial-gradient(circle at calc(var(--mx, 50%) + 18%) calc(var(--my, 28%) + 12%), rgba(201,25,32,.06), transparent 24rem);
-      opacity: .9;
     }
     .hero-grid {
       position: relative;
@@ -245,16 +281,10 @@
       height: auto;
       filter: drop-shadow(0 28px 60px rgba(0,0,0,.24));
       overflow: visible;
+      transition: transform .18s ease;
     }
-    .network-line {
-      stroke-dasharray: 7 10;
-      animation: dashMove 15s linear infinite;
-    }
-    .draw-line {
-      stroke-dasharray: 900;
-      stroke-dashoffset: 900;
-      animation: draw 1.8s ease forwards;
-    }
+    .network-line { stroke-dasharray: 7 10; animation: dashMove 15s linear infinite; }
+    .draw-line { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.8s ease forwards; }
     .node-pulse { animation: nodePulse 2.6s ease-in-out infinite; transform-origin: center; }
     .float-node { animation: floatNode 5.4s ease-in-out infinite; }
     .float-node.two { animation-delay: .8s; }
@@ -279,6 +309,50 @@
       box-shadow: 0 16px 36px rgba(0,0,0,.25);
       animation: floatChip 5s ease-in-out infinite;
     }
+    .status-panel {
+      position: absolute;
+      right: 4%;
+      bottom: 8%;
+      z-index: 6;
+      width: min(250px, 70%);
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(18,7,7,.78);
+      border: 1px solid rgba(242,188,47,.24);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 36px rgba(0,0,0,.25);
+      color: var(--cream);
+      animation: floatChip 5.8s ease-in-out infinite;
+    }
+    .status-panel small {
+      display: block;
+      color: var(--yellow-2);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 7px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .status-line:first-of-type { border-top: 0; }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--yellow-2);
+      box-shadow: 0 0 14px rgba(242,188,47,.9);
+      animation: nodePulse 2s ease-in-out infinite;
+      flex: 0 0 auto;
+    }
     .hero-chip svg { width: 16px; height: 16px; color: var(--yellow); }
     .chip-a { left: 4%; top: 20%; }
     .chip-b { right: 2%; top: 34%; animation-delay: .8s; }
@@ -292,11 +366,7 @@
     @keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.035); } }
     @keyframes rotateSvg { to { transform: rotate(360deg); } }
 
-    .section-band {
-      position: relative;
-      z-index: 5;
-      margin-top: -44px;
-    }
+    .section-band { position: relative; z-index: 5; margin-top: -44px; }
     .band-wrap {
       display: grid;
       grid-template-columns: repeat(4,1fr);
@@ -344,12 +414,7 @@
     .dark .tag { color: var(--yellow-2); }
     h2 { font-size: clamp(30px, 4.4vw, 56px); line-height: 1.04; letter-spacing: -2px; margin-bottom: 14px; }
 
-    .about-grid {
-      display: grid;
-      grid-template-columns: .95fr 1.05fr;
-      gap: 24px;
-      align-items: stretch;
-    }
+    .about-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 24px; align-items: stretch; }
     .about-panel {
       min-height: 100%;
       padding: 34px;
@@ -363,8 +428,18 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 32px;
+      position: relative;
+      overflow: hidden;
     }
     .about-panel p { color: #f3d6c3; }
+    .about-panel::after {
+      content: '';
+      position: absolute;
+      inset: auto -12% -28% 22%;
+      height: 220px;
+      background: radial-gradient(circle, rgba(242,188,47,.18), transparent 70%);
+      pointer-events: none;
+    }
     .about-list { display: grid; gap: 12px; }
     .about-row {
       display: grid;
@@ -416,19 +491,29 @@
     .solution-card::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 24px;
-      right: 24px;
-      height: 3px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, transparent, var(--yellow), var(--red-2), transparent);
-      transform: scaleX(0);
-      opacity: .8;
-      transition: transform .42s ease;
+      top: -120%;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background: linear-gradient(180deg, transparent, rgba(242,188,47,.18), transparent);
+      transform: translateY(-40%);
+      opacity: 0;
+      transition: opacity .18s ease, transform .65s ease;
+      pointer-events: none;
     }
     .solution-card:hover { transform: translateY(-6px); box-shadow: 0 18px 50px rgba(63,5,7,.12); border-color: rgba(201,25,32,.22); }
-    .solution-card:hover::after { transform: scaleX(1); }
     .solution-card:hover::before { transform: scale(1.25); }
+    .solution-card:hover::after { opacity: 1; transform: translateY(210%); }
+    .solution-card.is-visible .icon svg,
+    .about-row.is-visible .num,
+    .area-card.is-visible::before {
+      animation: techPop .8s ease both;
+    }
+    @keyframes techPop {
+      0% { transform: scale(.82); opacity: .55; }
+      60% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
     .icon {
       width: 54px;
       height: 54px;
@@ -443,19 +528,131 @@
     .icon svg { width: 27px; height: 27px; }
     .solution-card:hover .icon svg,
     .contact-card:hover svg { animation: iconNudge .55s ease both; }
-    @keyframes iconNudge {
-      0%, 100% { transform: translateY(0) scale(1); }
-      45% { transform: translateY(-3px) scale(1.06); }
-    }
+    @keyframes iconNudge { 0%, 100% { transform: translateY(0) scale(1); } 45% { transform: translateY(-3px) scale(1.06); } }
     .solution-card h3 { font-size: 22px; letter-spacing: -.7px; margin-bottom: 10px; color: #210908; }
     .solution-card p { font-size: 15px; }
 
-    .steps {
+    .area-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .area-card {
+      border-radius: 26px;
+      padding: 24px;
+      min-height: 220px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.13);
+      color: var(--cream);
       position: relative;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 18px;
+      overflow: hidden;
     }
+    .area-card::before {
+      content: '';
+      position: absolute;
+      inset: auto -18% -36% 38%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,188,47,.17), transparent 72%);
+    }
+    .area-card strong { display: block; font-size: 21px; margin-bottom: 8px; }
+    .area-card p { font-size: 14px; }
+
+    .interactive-detail {
+      margin-top: 18px;
+      border-top: 1px solid rgba(62,25,20,.12);
+      padding-top: 14px;
+      position: relative;
+      z-index: 2;
+    }
+    .interactive-detail summary {
+      cursor: pointer;
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--red-2);
+      user-select: none;
+    }
+    .interactive-detail summary::-webkit-details-marker { display: none; }
+    .interactive-detail summary::after {
+      content: '+';
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(201,25,32,.08);
+      transition: transform .18s ease;
+    }
+    .interactive-detail[open] summary::after { transform: rotate(45deg); }
+    .interactive-detail div {
+      margin-top: 12px;
+      color: var(--muted-dark);
+      font-size: 14px;
+    }
+
+    .scenario-shell {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .scenario-menu {
+      display: grid;
+      gap: 12px;
+    }
+    .scenario-btn {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--cream);
+      text-align: left;
+      padding: 18px;
+      border-radius: 22px;
+      cursor: pointer;
+      font: inherit;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .scenario-btn:hover,
+    .scenario-btn.active {
+      transform: translateX(4px);
+      background: rgba(242,188,47,.12);
+      border-color: rgba(242,188,47,.32);
+    }
+    .scenario-btn strong { display: block; font-size: 18px; margin-bottom: 4px; }
+    .scenario-btn span { display: block; color: var(--muted); font-size: 13px; }
+    .scenario-panel {
+      border-radius: 34px;
+      padding: 34px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      min-height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .scenario-panel::after {
+      content: '';
+      position: absolute;
+      inset: auto -70px -110px auto;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,188,47,.18), transparent 70%);
+    }
+    .scenario-panel > * { position: relative; z-index: 2; }
+    .scenario-panel h3 { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 14px; }
+    .scenario-list {
+      margin-top: 22px;
+      display: grid;
+      gap: 10px;
+    }
+    .scenario-list li {
+      color: var(--muted);
+      margin-left: 18px;
+    }
+    .scenario-cta { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .steps { position: relative; display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
     .steps::before {
       content: '';
       position: absolute;
@@ -479,7 +676,6 @@
       overflow: hidden;
     }
     .step::before {
-      counter-increment: step;
       content: attr(data-step);
       display: grid;
       place-items: center;
@@ -504,6 +700,82 @@
       opacity: .75;
     }
     .step h3 { font-size: 22px; margin-bottom: 8px; }
+
+    .form-section {
+      background:
+        radial-gradient(circle at 14% 16%, rgba(201,25,32,.22), transparent 30%),
+        linear-gradient(145deg, #fff4de, #ffe9c5);
+      color: #210908;
+    }
+    .form-shell {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+    .form-copy {
+      border-radius: 34px;
+      padding: 34px;
+      background: linear-gradient(145deg, var(--red), var(--red-3));
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+    .form-copy::after {
+      content: '';
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -90px;
+      bottom: -120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,188,47,.22), transparent 70%);
+    }
+    .form-copy p { color: #f3d6c3; }
+    .lead-form {
+      border-radius: 34px;
+      padding: 28px;
+      background: var(--cream-2);
+      border: 1px solid var(--line-dark);
+      box-shadow: 0 22px 70px rgba(63,5,7,.12);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-field { display: grid; gap: 7px; }
+    .form-field.full { grid-column: 1 / -1; }
+    label { font-size: 13px; font-weight: 800; color: #3a1712; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(62,25,20,.16);
+      border-radius: 16px;
+      padding: 13px 14px;
+      background: #fff;
+      color: #210908;
+      font: inherit;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(201,25,32,.45);
+      box-shadow: 0 0 0 4px rgba(201,25,32,.08);
+    }
+    .form-note { margin-top: 12px; font-size: 12px; color: var(--muted-dark); }
+    .smart-response {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(201,25,32,.07);
+      border: 1px solid rgba(201,25,32,.12);
+      color: var(--muted-dark);
+      font-size: 14px;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .smart-response strong { color: #210908; }
+    .lead-form .btn { margin-top: 16px; width: 100%; border: 0; }
 
     .cta {
       padding: 90px 0;
@@ -596,9 +868,9 @@
     @media (max-width: 980px) {
       .menu { display: none; }
       .hero { min-height: auto; }
-      .hero-grid, .about-grid, .cta-box { grid-template-columns: 1fr; }
+      .hero-grid, .about-grid, .form-shell, .cta-box { grid-template-columns: 1fr; }
       .signal-stage { min-height: 420px; }
-      .band-wrap, .solutions-grid, .contact-grid { grid-template-columns: repeat(2,1fr); }
+      .band-wrap, .solutions-grid, .area-grid, .contact-grid { grid-template-columns: repeat(2,1fr); }
       .steps { grid-template-columns: 1fr; }
       .steps::before { display: none; }
       .footer-grid { grid-template-columns: 1fr; }
@@ -612,11 +884,11 @@
       h1 { letter-spacing: -2.2px; }
       .hero { padding: 48px 0 72px; }
       .signal-stage { min-height: 310px; margin-top: 8px; }
-      .hero-chip { display: none; }
+      .hero-chip, .status-panel { display: none; }
       .section-band { margin-top: -44px; }
-      .band-wrap, .solutions-grid, .contact-grid { grid-template-columns: 1fr; }
+      .band-wrap, .solutions-grid, .area-grid, .contact-grid, .form-grid { grid-template-columns: 1fr; }
       section { padding: 62px 0; }
-      .cta-box, .about-panel { padding: 28px; }
+      .cta-box, .about-panel, .form-copy, .lead-form { padding: 28px; }
       .btn { width: 100%; }
       .float-contact { right: 14px; bottom: 14px; padding: 12px 14px; }
       .float-contact span { display: none; }
@@ -631,8 +903,34 @@
       }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Carrera Telecom",
+    "legalName": "Carrera Telecom",
+    "url": "./",
+    "logo": "assets/favicon.png",
+    "description": "Representação comercial em telecomunicações, com apresentação de soluções em conectividade, TV, telefonia móvel, Wi-Fi e serviços relacionados.",
+    "taxID": "21.135.589/0001-05",
+    "email": "tomazimurilo@gmail.com",
+    "telephone": "+55 48 98845-4131",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Coronel Izidoro, 1022, Galpão, Bairro Universitário",
+      "addressLocality": "Tijucas",
+      "addressRegion": "SC",
+      "postalCode": "88201-540",
+      "addressCountry": "BR"
+    },
+    "sameAs": [
+      "https://www.instagram.com/carreratelecombr/"
+    ]
+  }
+  </script>
 </head>
 <body>
+  <a href="#inicio" class="skip-link">Ir para o conteúdo principal</a>
   <div class="page-network" aria-hidden="true">
     <svg viewBox="0 0 100 300" preserveAspectRatio="none">
       <defs>
@@ -647,11 +945,14 @@
       <circle class="network-node node-hero" cx="73" cy="14" r="1.1" fill="#ffe08a"/>
       <circle class="network-node node-sobre" cx="61" cy="91" r="1.1" fill="#ffe08a"/>
       <circle class="network-node node-portifolio" cx="50" cy="143" r="1.1" fill="#ffe08a"/>
+      <circle class="network-node node-atuacao" cx="56" cy="171" r="1.1" fill="#ffe08a"/>
       <circle class="network-node node-como" cx="52" cy="197" r="1.1" fill="#ffe08a"/>
+      <circle class="network-node node-formulario" cx="46" cy="235" r="1.1" fill="#ffe08a"/>
       <circle class="network-node node-contato" cx="44" cy="272" r="1.1" fill="#ffe08a"/>
       <circle class="network-dot" cx="73" cy="14" r=".72"/>
     </svg>
   </div>
+
   <header class="topbar">
     <div class="container nav">
       <a class="brand" href="#inicio" aria-label="Carrera Telecom">
@@ -664,8 +965,8 @@
       <nav class="menu" aria-label="Menu principal">
         <a href="#sobre">Empresa</a>
         <a href="#portifolio">Portfólio</a>
-        <a href="#como-funciona">Como funciona</a>
-        <a href="#contato">Contato</a>
+        <a href="#atuacao">Atuação</a>
+        <a href="#formulario">Contato rápido</a>
       </nav>
       <a class="btn btn-primary" href="https://wa.me/5548988454131" target="_blank" rel="noopener">Falar com a Carrera</a>
     </div>
@@ -680,7 +981,7 @@
             Representação comercial em telecomunicações
           </div>
           <h1>Mais do que representar serviços, representamos <span class="yellow">conexões</span>.</h1>
-          <p class="lead">A Carrera Telecom aproxima clientes e soluções do setor de telecom com clareza comercial, atendimento humano e visão consultiva.</p>
+          <p class="lead">A Carrera Telecom aproxima clientes, empresas e soluções do setor de telecom com clareza comercial, atendimento humano e visão consultiva.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://wa.me/5548988454131" target="_blank" rel="noopener">Falar com a Carrera</a>
             <a class="btn btn-secondary" href="#sobre">Conhecer a empresa</a>
@@ -700,6 +1001,12 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg>
             Relacionamento
           </span>
+          <div class="status-panel" aria-label="Status comercial Carrera Telecom">
+            <small>Sinal comercial ativo</small>
+            <div class="status-line"><span>Consultoria telecom</span><i class="status-dot"></i></div>
+            <div class="status-line"><span>Atendimento humano</span><i class="status-dot"></i></div>
+            <div class="status-line"><span>Conexões em andamento</span><i class="status-dot"></i></div>
+          </div>
 
           <svg class="hero-svg" viewBox="0 0 620 520" role="img" aria-label="Fluxo de conexões Carrera Telecom">
             <defs>
@@ -793,6 +1100,10 @@
               <h3>Conectividade fixa</h3>
             </div>
             <p>Serviços de internet e conexão para uso residencial, profissional e empresarial.</p>
+            <details class="interactive-detail">
+              <summary>Ver detalhes</summary>
+              <div>Ideal para clientes que buscam estabilidade, cobertura, velocidade e orientação antes de contratar.</div>
+            </details>
           </article>
           <article class="solution-card reveal delay-1">
             <div>
@@ -800,6 +1111,10 @@
               <h3>Entretenimento</h3>
             </div>
             <p>Serviços de TV, conteúdo e soluções complementares para uma experiência mais completa.</p>
+            <details class="interactive-detail">
+              <summary>Ver detalhes</summary>
+              <div>Apresentação comercial de opções de entretenimento conforme disponibilidade, perfil de uso e condições vigentes.</div>
+            </details>
           </article>
           <article class="solution-card reveal delay-2">
             <div>
@@ -807,6 +1122,10 @@
               <h3>Mobilidade</h3>
             </div>
             <p>Soluções móveis para manter pessoas e negócios conectados fora do ambiente fixo.</p>
+            <details class="interactive-detail">
+              <summary>Ver detalhes</summary>
+              <div>Direcionamento para soluções de mobilidade, comunicação e conectividade fora de casa ou do escritório.</div>
+            </details>
           </article>
           <article class="solution-card reveal delay-3">
             <div>
@@ -814,12 +1133,62 @@
               <h3>Experiência Wi‑Fi</h3>
             </div>
             <p>Orientação sobre conectividade interna, cobertura de ambientes e qualidade de uso.</p>
+            <details class="interactive-detail">
+              <summary>Ver detalhes</summary>
+              <div>Ajuda a entender cenários com múltiplos cômodos, dispositivos conectados e necessidade de melhor experiência Wi‑Fi.</div>
+            </details>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="como-funciona" class="dark" data-network="como">
+    <section id="atuacao" class="dark" data-network="atuacao">
+      <div class="container">
+        <div class="section-head center reveal">
+          <div class="tag">Áreas de atuação</div>
+          <h2>Conexões que fazem sentido para cada cenário.</h2>
+          <p>O atendimento comercial parte do contexto do cliente para indicar soluções com mais coerência, clareza e segurança.</p>
+        </div>
+        <div class="area-grid">
+          <div class="area-card reveal"><strong>Residencial</strong><p>Conectividade para rotina familiar, entretenimento, estudos, trabalho remoto e uso diário.</p></div>
+          <div class="area-card reveal delay-1"><strong>Empresarial</strong><p>Soluções para negócios que precisam de comunicação, presença digital e operação conectada.</p></div>
+          <div class="area-card reveal delay-2"><strong>Mobilidade</strong><p>Orientação para serviços móveis e conectividade fora do ambiente fixo.</p></div>
+          <div class="area-card reveal delay-3"><strong>Ambientes</strong><p>Melhor experiência de Wi‑Fi, cobertura interna e uso de múltiplos dispositivos.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cenario" class="dark">
+      <div class="container scenario-shell">
+        <div class="reveal">
+          <div class="section-head">
+            <div class="tag">Experiência guiada</div>
+            <h2>Escolha um cenário e veja como a Carrera pode orientar.</h2>
+            <p>Uma camada interativa para o visitante entender rapidamente onde a representação comercial se encaixa.</p>
+          </div>
+          <div class="scenario-menu" role="tablist" aria-label="Cenários de atendimento">
+            <button class="scenario-btn active" type="button" data-scenario="residencial"><strong>Residencial</strong><span>Conectividade para rotina familiar e digital.</span></button>
+            <button class="scenario-btn" type="button" data-scenario="empresarial"><strong>Empresarial</strong><span>Soluções para operação, comunicação e produtividade.</span></button>
+            <button class="scenario-btn" type="button" data-scenario="mobilidade"><strong>Mobilidade</strong><span>Serviços para se manter conectado fora do ambiente fixo.</span></button>
+          </div>
+        </div>
+        <div class="scenario-panel reveal delay-1" id="scenarioPanel">
+          <div class="tag">Cenário selecionado</div>
+          <h3 id="scenarioTitle">Residencial</h3>
+          <p id="scenarioText">A Carrera orienta o cliente na escolha de soluções para navegação, entretenimento, Wi‑Fi e uso diário em casa.</p>
+          <ul class="scenario-list" id="scenarioList">
+            <li>Entendimento do perfil de uso da residência.</li>
+            <li>Consulta de disponibilidade conforme endereço.</li>
+            <li>Orientação sobre conectividade, TV, mobilidade e Wi‑Fi.</li>
+          </ul>
+          <div class="scenario-cta">
+            <a class="btn btn-primary" id="scenarioCta" href="https://wa.me/5548988454131?text=Ol%C3%A1%2C%20Carrera%20Telecom!%20Quero%20orienta%C3%A7%C3%A3o%20para%20um%20cen%C3%A1rio%20residencial." target="_blank" rel="noopener">Pedir orientação</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="dark" style="padding-top:0;" data-network="como">
       <div class="container">
         <div class="section-head center reveal">
           <div class="tag">Como funciona</div>
@@ -883,6 +1252,53 @@
       </div>
     </section>
 
+    <section id="formulario" class="form-section" data-network="formulario">
+      <div class="container form-shell">
+        <div class="form-copy reveal">
+          <div>
+            <div class="tag" style="color: var(--yellow-2);">Contato rápido</div>
+            <h2>Receba uma orientação comercial para o seu cenário.</h2>
+            <p>Preencha as informações principais e envie diretamente para o atendimento da Carrera Telecom pelo WhatsApp.</p>
+          </div>
+          <p>O formulário não salva dados no site. Ele apenas monta uma mensagem para iniciar o atendimento.</p>
+        </div>
+
+        <form class="lead-form reveal delay-1" id="leadForm">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="nome">Nome</label>
+              <input id="nome" name="nome" type="text" placeholder="Seu nome" autocomplete="name" required />
+            </div>
+            <div class="form-field">
+              <label for="telefone">Telefone</label>
+              <input id="telefone" name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" inputmode="tel" required />
+            </div>
+            <div class="form-field">
+              <label for="cidade">Cidade</label>
+              <input id="cidade" name="cidade" type="text" placeholder="Sua cidade" autocomplete="address-level2" required />
+            </div>
+            <div class="form-field">
+              <label for="servico">Interesse</label>
+              <select id="servico" name="servico">
+                <option value="Conectividade fixa">Conectividade fixa</option>
+                <option value="Entretenimento / TV">Entretenimento / TV</option>
+                <option value="Mobilidade">Mobilidade</option>
+                <option value="Experiência Wi‑Fi">Experiência Wi‑Fi</option>
+                <option value="Orientação comercial">Orientação comercial</option>
+              </select>
+            </div>
+            <div class="form-field full">
+              <label for="endereco">Endereço ou contexto</label>
+              <textarea id="endereco" name="endereco" placeholder="Informe bairro, rua, número ou explique o que você precisa" autocomplete="street-address" required></textarea>
+            </div>
+          </div>
+          <div class="smart-response" id="smartResponse"><strong>Orientação:</strong> vamos entender seu cenário e direcionar a melhor opção comercial disponível.</div>
+          <button class="btn btn-primary" type="submit">Enviar para atendimento</button>
+          <p class="form-note">Ao enviar, você será direcionado para o WhatsApp com a mensagem já preenchida.</p>
+        </form>
+      </div>
+    </section>
+
     <section class="cta dark">
       <div class="container cta-box reveal">
         <div>
@@ -940,8 +1356,9 @@
         <h4>Navegação</h4>
         <a href="#sobre">Empresa</a>
         <a href="#portifolio">Portfólio</a>
+        <a href="#atuacao">Áreas de atuação</a>
         <a href="#como-funciona">Como funciona</a>
-        <a href="#diferenciais">Diferenciais</a>
+        <a href="#formulario">Contato rápido</a>
         <a href="#contato">Contato</a>
       </div>
       <div class="footer-col">
@@ -1022,8 +1439,8 @@
     if (stage && svg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       stage.addEventListener('pointermove', (event) => {
         const rect = stage.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 10;
-        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 10;
+        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 9;
+        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 9;
         svg.style.transform = `rotateX(${-y}deg) rotateY(${x}deg)`;
         document.body.style.setProperty('--mx', `${event.clientX}px`);
         document.body.style.setProperty('--my', `${event.clientY}px`);
@@ -1035,6 +1452,107 @@
         document.body.style.setProperty('--mx', `${event.clientX}px`);
         document.body.style.setProperty('--my', `${event.clientY}px`);
       }, { passive: true });
+    }
+
+    const scenarioData = {
+      residencial: {
+        title: 'Residencial',
+        text: 'A Carrera orienta o cliente na escolha de soluções para navegação, entretenimento, Wi‑Fi e uso diário em casa.',
+        items: ['Entendimento do perfil de uso da residência.', 'Consulta de disponibilidade conforme endereço.', 'Orientação sobre conectividade, TV, mobilidade e Wi‑Fi.'],
+        msg: 'Olá, Carrera Telecom! Quero orientação para um cenário residencial.'
+      },
+      empresarial: {
+        title: 'Empresarial',
+        text: 'A Carrera ajuda negócios a entender opções de conectividade, comunicação e serviços telecom conforme o cenário da empresa.',
+        items: ['Levantamento da necessidade comercial.', 'Avaliação de opções conforme região e disponibilidade.', 'Direcionamento para soluções de conectividade e serviços relacionados.'],
+        msg: 'Olá, Carrera Telecom! Quero orientação para um cenário empresarial.'
+      },
+      mobilidade: {
+        title: 'Mobilidade',
+        text: 'A Carrera direciona clientes que precisam de conexão também fora do ambiente fixo, com foco em comunicação e continuidade.',
+        items: ['Entendimento do uso fora de casa ou da empresa.', 'Análise de serviços móveis e soluções relacionadas.', 'Orientação comercial para o próximo passo.'],
+        msg: 'Olá, Carrera Telecom! Quero orientação sobre mobilidade.'
+      }
+    };
+
+    const scenarioButtons = document.querySelectorAll('.scenario-btn');
+    const scenarioTitle = document.querySelector('#scenarioTitle');
+    const scenarioText = document.querySelector('#scenarioText');
+    const scenarioList = document.querySelector('#scenarioList');
+    const scenarioCta = document.querySelector('#scenarioCta');
+
+    scenarioButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.scenario;
+        const data = scenarioData[key];
+        if (!data) return;
+
+        scenarioButtons.forEach((item) => item.classList.remove('active'));
+        button.classList.add('active');
+
+        scenarioTitle.textContent = data.title;
+        scenarioText.textContent = data.text;
+        scenarioList.innerHTML = data.items.map((item) => `<li>${item}</li>`).join('');
+        scenarioCta.href = `https://wa.me/5548988454131?text=${encodeURIComponent(data.msg)}`;
+      });
+    });
+
+    document.querySelectorAll('.interactive-detail').forEach((detail) => {
+      detail.addEventListener('toggle', () => {
+        if (!detail.open) return;
+        document.querySelectorAll('.interactive-detail').forEach((other) => {
+          if (other !== detail) other.removeAttribute('open');
+        });
+      });
+    });
+
+    const serviceSelect = document.querySelector('#servico');
+    const smartResponse = document.querySelector('#smartResponse');
+    const smartMessages = {
+      'Conectividade fixa': 'vamos entender cobertura, endereço e perfil de uso para indicar a melhor orientação comercial.',
+      'Entretenimento / TV': 'vamos verificar opções de conteúdo e entretenimento disponíveis para o seu cenário.',
+      'Mobilidade': 'vamos orientar sobre soluções móveis para manter sua rotina conectada fora do ambiente fixo.',
+      'Experiência Wi‑Fi': 'vamos analisar o ambiente, quantidade de dispositivos e necessidade de melhor cobertura interna.',
+      'Orientação comercial': 'vamos entender sua necessidade e direcionar o melhor próximo passo em telecom.'
+    };
+    if (serviceSelect && smartResponse) {
+      serviceSelect.addEventListener('change', () => {
+        const value = serviceSelect.value;
+        smartResponse.style.opacity = '0';
+        smartResponse.style.transform = 'translateY(6px)';
+        setTimeout(() => {
+          smartResponse.innerHTML = `<strong>Orientação:</strong> ${smartMessages[value] || smartMessages['Orientação comercial']}`;
+          smartResponse.style.opacity = '1';
+          smartResponse.style.transform = 'translateY(0)';
+        }, 140);
+      });
+    }
+
+    const leadForm = document.querySelector('#leadForm');
+    if (leadForm) {
+      leadForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!leadForm.checkValidity()) {
+          leadForm.reportValidity();
+          return;
+        }
+        const data = new FormData(leadForm);
+        const nome = data.get('nome') || '-';
+        const telefone = data.get('telefone') || '-';
+        const cidade = data.get('cidade') || '-';
+        const servico = data.get('servico') || '-';
+        const endereco = data.get('endereco') || '-';
+
+        const message = `Olá, Carrera Telecom! Gostaria de receber uma orientação comercial.
+
+Nome: ${nome}
+Telefone: ${telefone}
+Cidade: ${cidade}
+Interesse: ${servico}
+Endereço/contexto: ${endereco}`;
+        const url = `https://wa.me/5548988454131?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank', 'noopener');
+      });
     }
   </script>
 </body>
